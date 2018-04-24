@@ -13,7 +13,7 @@ function! s:zk_new()
     let id = s:zk_new_id()
     execute 'edit' id . '.md'
 endfunction
-command ZkNew call s:zk_new()
+command! ZkNew call s:zk_new()
 
 " Search notes in this directory
 function! s:zk_search(search_string)
@@ -28,14 +28,14 @@ function! s:zk_search(search_string)
         echom "No matches."
     endtry
 endfunction
-command ZkSearch call s:zk_search("")
+command! ZkSearch call s:zk_search("")
 
 " Copy a link to this file into unnamed register
 function! s:zk_copylink()
     let id = s:zk_get_id()
     let @@ = "[" . id . "](" . id . ".html)"
 endfunction
-command ZkCopyLink call s:zk_copylink()
+command! ZkCopyLink call s:zk_copylink()
 
 " Search for backlinks to this note
 function! s:zk_backlinks()
@@ -46,7 +46,7 @@ function! s:zk_backlinks()
         echom "No matches."
     endtry
 endfunction
-command ZkBacklinks call s:zk_backlinks()
+command! ZkBacklinks call s:zk_backlinks()
 
 " Get list of pages
 function! s:zk_getfiles(ArgLead, CmdLine, CursorPos)
@@ -63,21 +63,21 @@ endfunction
 function! s:zk_gotopage(pagename)
     execute "edit " . a:pagename . ".md"
 endfunction
-command -nargs=1 -complete=custom,s:zk_getfiles ZkGotoPage call s:zk_gotopage(<q-args>)
+command! -nargs=1 -complete=custom,s:zk_getfiles ZkGotoPage call s:zk_gotopage(<q-args>)
 
 " Insert link to page
 function! s:zk_linktopage(pagename)
     let linktext = "[" . a:pagename . "](" . a:pagename . ".html)"
     execute ':normal! a' . linktext
 endfunction
-command -nargs=1 -complete=custom,s:zk_getfiles ZkLinkToPage call s:zk_linktopage(<q-args>)
+command! -nargs=1 -complete=custom,s:zk_getfiles ZkLinkToPage call s:zk_linktopage(<q-args>)
 
 " Insert link and go to page
 function! s:zk_linkandgo(pagename)
     call s:zk_linktopage(a:pagename)
     call s:zk_gotopage(a:pagename)
 endfunction
-command -nargs=1 -complete=custom,s:zk_getfiles ZkLinkAndGo call s:zk_linkandgo(<q-args>)
+command! -nargs=1 -complete=custom,s:zk_getfiles ZkLinkAndGo call s:zk_linkandgo(<q-args>)
 
 " Extract selection into page
 function! s:zk_extractto(pagename) range
@@ -86,21 +86,21 @@ function! s:zk_extractto(pagename) range
     call s:zk_gotopage(a:pagename)
     normal Gp
 endfunction
-command -nargs=1 -complete=custom,s:zk_getfiles -range ZkExtractTo <line1>,<line2>call s:zk_extractto(<q-args>)
+command! -nargs=1 -complete=custom,s:zk_getfiles -range ZkExtractTo <line1>,<line2>call s:zk_extractto(<q-args>)
 
 " Go to today's note
 function! s:zk_gototoday()
     let id = strftime('%Y-%m-%d')
     execute 'edit' id . '.md'
 endfunction
-command ZkGoToToday call s:zk_gototoday()
+command! ZkGoToToday call s:zk_gototoday()
 
 " Go home
 function! s:zk_gotoindex()
     let id = 'index'
     execute 'edit' id . '.md'
 endfunction
-command ZkGoToIndex call s:zk_gotoindex()
+command! ZkGoToIndex call s:zk_gotoindex()
 
 " Create maps if requested
 if exists("g:vim_zk_create_mappings") && g:vim_zk_create_mappings == 1
