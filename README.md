@@ -1,2 +1,4 @@
-# vim-zk
-A Zettelkasten-like plugin for Vim
+vim-zk
+======
+
+A Zettelkasten-inspired plugin for Vim
