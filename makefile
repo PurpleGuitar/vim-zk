@@ -1,8 +1,7 @@
 # Generate all HTML files from MD
 .PHONY: all
 all: _page_links.dot.png \
-     $(patsubst %.md,%.html,$(wildcard *.md)) \
-     $(patsubst %.dot,%.dot.png,$(wildcard *.dot))
+     $(patsubst %.md,%.html,$(wildcard *.md))
 
 # Generate page links diagram
 _page_links.dot: $(wildcard *.md)
@@ -19,7 +18,9 @@ _page_links.dot: $(wildcard *.md)
 # Clean up files
 .PHONY: clean
 clean:
+ifneq ($(wildcard _page_links.*),)
 	rm -f _page_links.*
+endif
 ifneq ($(wildcard *.html),)
 	rm $(wildcard *.html)
 endif
