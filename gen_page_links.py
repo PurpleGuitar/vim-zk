@@ -9,6 +9,7 @@ def main():
 def print_graph(markdown_filenames):
     page_names = [os.path.splitext(filename)[0] for filename in markdown_filenames]
     print("digraph {")
+    print("    graph [rankdir=LR]")
     print("    node [shape=box];")
     for page_name in page_names:
         print("    {0};".format(page_name))

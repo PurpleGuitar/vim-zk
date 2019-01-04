@@ -1,25 +1,28 @@
-# Generate all HTML files from MD
-.PHONY: all
-all: _page_links.dot.png \
-     $(patsubst %.md,%.html,$(wildcard *.md))
+.PHONY: all gen_metadata gen_graphs gen_html clean
 
-# Generate page links diagram
+all: gen_metadata gen_graphs gen_html
+
+gen_metadata: _page_links.dot.png
+
+gen_graphs: $(patsubst %.dot,%.dot.png,$(wildcard *.dot))
+
+gen_html: $(patsubst %.md,%.html,$(wildcard *.md))
+
 _page_links.dot: $(wildcard *.md)
 	python3 gen_page_links.py > _page_links.dot
 
-# Convert DOT to PNG
 %.dot.png : %.dot
 	dot -Tpng -o$@ $<
 
-# Convert HTML to MD
 %.html : %.md
 	pandoc --from=markdown --to=html --css=style.css --output $@ $<
 
-# Clean up files
-.PHONY: clean
 clean:
-ifneq ($(wildcard _page_links.*),)
-	rm -f _page_links.*
+ifneq ($(wildcard _page_links.dot),)
+	rm -f _page_links.dot
+endif
+ifneq ($(wildcard *.dot.png),)
+	rm $(wildcard *.dot.png)
 endif
 ifneq ($(wildcard *.html),)
 	rm $(wildcard *.html)
