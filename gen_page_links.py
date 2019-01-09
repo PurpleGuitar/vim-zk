@@ -7,17 +7,24 @@ def main():
     print_graph(markdown_filenames)
 
 def print_graph(markdown_filenames):
-    page_names = [os.path.splitext(filename)[0] for filename in markdown_filenames]
     print("digraph {")
     print("    graph [rankdir=LR]")
     print("    node [shape=box];")
-    for page_name in page_names:
-        print("    {0};".format(page_name))
-    print("    node [shape=box,color=red];")
     for filename in markdown_filenames:
-        page_name = os.path.splitext(filename)[0]
+        if filename[0] == "_":
+            continue
+        page_name = get_page_name(filename)
+        print("    {0} [URL=\"{1}\"];".format(page_name, page_name + ".html"))
+    print("    node [shape=box,color=red];")
+    page_names = [get_page_name(filename) for filename in markdown_filenames]
+    for filename in markdown_filenames:
+        if filename[0] == "_":
+            continue
+        page_name = get_page_name(filename)
         for link in get_links(filename):
             link_name = os.path.splitext(link)[0]
+            if link_name[0] == "_":
+                continue
             edge_attributes = ""
             if link_name not in page_names:
                 edge_attributes = "[color=red]"
@@ -26,6 +33,9 @@ def print_graph(markdown_filenames):
                       link_name,
                       edge_attributes))
     print("}")
+
+def get_page_name(filename):
+    return os.path.splitext(filename)[0]
 
 def get_links(filename):
     links = []
