@@ -14,7 +14,7 @@ def print_graph(markdown_filenames):
         if filename[0] == "_":
             continue
         page_name = get_page_name(filename)
-        print("    {0} [URL=\"{1}\"];".format(page_name, page_name + ".html"))
+        print("    \"{0}\" [URL=\"{1}\"];".format(page_name, page_name + ".html"))
     print("    node [shape=box,color=red];")
     page_names = [get_page_name(filename) for filename in markdown_filenames]
     for filename in markdown_filenames:
@@ -28,7 +28,7 @@ def print_graph(markdown_filenames):
             edge_attributes = ""
             if link_name not in page_names:
                 edge_attributes = "[color=red]"
-            print("    {0} -> {1} {2};".format(
+            print("    \"{0}\" -> \"{1}\" {2};".format(
                       page_name,
                       link_name,
                       edge_attributes))

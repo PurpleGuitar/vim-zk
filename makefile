@@ -2,10 +2,12 @@
 
 all: gen_metadata gen_graphs gen_html
 
-gen_metadata: _page_links.dot.png
+gen_metadata: _page_links.dot.png _page_links.dot.svg
 
 _page_links.dot: _page_links.html $(wildcard *.md)
 	python3 gen_page_links.py > _page_links.dot
+
+_page_links.dot.svg: _page_links.dot _page_links.html
 	dot -Tsvg -o _page_links.dot.svg _page_links.dot
 
 _page_links.html:
