@@ -15,10 +15,7 @@ _page_links.dot.svg: _page_links.dot
 	dot -Tsvg -o _page_links.dot.svg _page_links.dot
 
 _page_links.html:
-	echo "<html><head><title>Page Links</title>\
-              <link rel='stylesheet' href='style.css' type='text/css' /></head>\
-              <body><a href='#' class='svg'><object width='100%' height='100%' data='_page_links.dot.svg' type='image/svg+xml'><img src='_page_links.dot.png' /></object></a></body></html>\
-             " > _page_links.html
+	cp $(MAKEFILE_DIR)/_page_links.html .
 
 _metadata.yaml: $(wildcard *.md)
 	python3 $(MAKEFILE_DIR)/gen_metadata.py > _metadata.yaml
@@ -35,13 +32,13 @@ gen_html: $(patsubst %.md,%.html,$(wildcard *.md))
 
 clean:
 ifneq ($(wildcard _metadata.yaml),)
-	rm -f _metadata.yaml
+	rm _metadata.yaml
 endif
 ifneq ($(wildcard _page_links.dot),)
-	rm -f _page_links.dot
+	rm _page_links.dot
 endif
 ifneq ($(wildcard _page_links.dot.svg),)
-	rm -f _page_links.dot.svg
+	rm _page_links.dot.svg
 endif
 ifneq ($(wildcard *.dot.png),)
 	rm $(wildcard *.dot.png)
