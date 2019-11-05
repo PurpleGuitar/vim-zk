@@ -1,3 +1,5 @@
+MAKEFILE_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
 .PHONY: all gen_metadata _page_links gen_graphs gen_html clean
 
 all: gen_metadata gen_graphs gen_html
@@ -7,7 +9,7 @@ gen_metadata: _page_links
 _page_links: _page_links.html _page_links.dot.png _page_links.dot.svg
 
 _page_links.dot: _metadata.yaml
-	python3 gen_page_links.py > _page_links.dot
+	python3 $(MAKEFILE_DIR)/gen_page_links.py > _page_links.dot
 
 _page_links.dot.svg: _page_links.dot
 	dot -Tsvg -o _page_links.dot.svg _page_links.dot
@@ -19,7 +21,7 @@ _page_links.html:
              " > _page_links.html
 
 _metadata.yaml: $(wildcard *.md)
-	python3 gen_metadata.py > _metadata.yaml
+	python3 $(MAKEFILE_DIR)/gen_metadata.py > _metadata.yaml
 
 gen_graphs: $(patsubst %.dot,%.dot.png,$(wildcard *.dot))
 
@@ -29,7 +31,7 @@ gen_html: $(patsubst %.md,%.html,$(wildcard *.md))
 	dot -Tpng -o$@ $<
 
 %.html : %.md
-	pandoc --from=markdown --to=html --css=style.css --toc --output $@ $<
+	pandoc --from=markdown --to=html --css=style.css --toc --standalone --output $@ $<
 
 clean:
 ifneq ($(wildcard _metadata.yaml),)
