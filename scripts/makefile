@@ -6,16 +6,13 @@ all: gen_metadata gen_graphs gen_html
 
 gen_metadata: _page_links
 
-_page_links: _page_links.html _page_links.dot.png _page_links.dot.svg
+_page_links: _page_links.dot.png _page_links.dot.svg
 
 _page_links.dot: _metadata.yaml
 	python3 $(MAKEFILE_DIR)/gen_page_links.py > _page_links.dot
 
 _page_links.dot.svg: _page_links.dot
 	dot -Tsvg -o _page_links.dot.svg _page_links.dot
-
-_page_links.html:
-	cp $(MAKEFILE_DIR)/_page_links.html .
 
 _metadata.yaml: $(wildcard *.md)
 	python3 $(MAKEFILE_DIR)/gen_metadata.py > _metadata.yaml
