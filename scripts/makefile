@@ -24,8 +24,18 @@ gen_html: $(patsubst %.md,%.html,$(wildcard *.md))
 %.dot.png : %.dot
 	dot -Tpng -o$@ $<
 
-%.html : %.md
-	pandoc --from=markdown --to=html --css=style.css --toc --standalone --output $@ $<
+%.html : %.md html-header
+	pandoc \
+		--from=markdown \
+		--to=html \
+		--css=style.css \
+		--toc \
+		--standalone \
+		--include-in-header html-header \
+		--output $@ $<
+
+html-header:
+	echo "<!-- vim: filetype=html -->\n<!-- Place your HTML header customizations here. -->" > html-header
 
 clean:
 ifneq ($(wildcard _metadata.yaml),)
